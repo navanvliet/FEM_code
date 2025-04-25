@@ -9,17 +9,17 @@ from soil import create_soil
 
 # Initialize Input server
 localhost_input = 10000
-password_input = '34gC44ynG?!Xe=LM'
+password_input = 'YQ+R8$e5xy+G26z~'
 s_i, g_i = new_server('localhost', localhost_input, password=password_input)
 
 
 # Initialize output server
 localhost_output = 10001
-password_output = '34gC44ynG?!Xe=LM'
+password_output = 'YQ+R8$e5xy+G26z~'
 s_o, g_o = new_server('localhost', localhost_output, password=password_output)
 
-diameters = [0.1, 0.15, 0.2, 0.25, 0.3, 0.35]  # [m]
-fmax_values = diameters
+D_array = np.arange(0.1, 0.4, 0.025)  # [m]
+fmax_values = D_array/0.2*100  # [kN]
 
 xmin = -15
 xmax = 15
@@ -78,11 +78,11 @@ Point_N = [x_N, y_N]
 x_O, y_O = -0.3, y_kesp # [m], [m]
 Point_O = [x_O, y_O]
 
-for select in range(len(diameters)):
+for select in range(len(D_array)):
 
-    fmax_values[select] = diameters[select]/0.2*100 # [kN]
+    fmax_values[select] = D_array[select]/0.2*100 # [kN]
 
-    s_i.open(r'C:\Users\niels\PLAXIS_PhD\test.p2dx')
+    s_i.open(r'C:\Users\nielsvanvliet\PLAXIS_models\test.p2dx')
 
     create_soil(s_i, g_i)
 
@@ -187,10 +187,11 @@ for select in range(len(diameters)):
     g_i.Line_3.Name = 'Pile_3_Line'
     
     E_timber = 11e6 # [kN/m^2] Stiffness
-    D = diameters[select] # [m] Diameter
+    D = D_array[select] # [m] Diameter
     L_spacing = 1 # [m]
     Gamma_Timber = 4.2 # [kN/m^3] Density
     F_max = fmax_values[select] # [kN] Base resistance
+
 
     # Create Timber_Pile material
     g_i.embeddedbeammat(("Identification", "Timber_Pile"),
@@ -199,7 +200,7 @@ for select in range(len(diameters)):
                         ("Lspacing", L_spacing),
                         ("Diameter", D),
                         ("E", E_timber),
-                        ("Fmax",100))
+                        ("Fmax",F_max))
 
     # Assign Timber_Pile material to Embedded beams
     g_i.Pile_1.Material = [m for m in g_i.Materials if m.Name == 'Timber_Pile'][0]
@@ -300,10 +301,6 @@ for select in range(len(diameters)):
     phase.Deform.ResetDisplacements = False
     phase.Deform.CalculationType = "Drained"
 
-    phase = phases[10]
-    phase.Deform.ResetDisplacements = False
-    phase.Deform.CalculationType = "Drained"
-
     g_i.TAK_load.activate(phase)
 
     g_i.gotomesh()
@@ -361,7 +358,7 @@ for select in range(len(diameters)):
     piledf = pd.DataFrame(data)
 
     # Save to CSV
-    csv_filename = f"pile_D{diameters[select]}.csv"
+    csv_filename = f"pile_D{D_array[select]}.csv"
     piledf.to_csv(csv_filename, index=False)
 
     print(f"Data has been saved to {csv_filename}.")
