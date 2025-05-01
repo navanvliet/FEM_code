@@ -18,7 +18,7 @@ localhost_output = 10001
 password_output = 'YQ+R8$e5xy+G26z~'
 s_o, g_o = new_server('localhost', localhost_output, password=password_output)
 
-D_array = np.arange(0.1, 0.4, 0.025)  # [m]
+D_array = np.round(np.arange(0.1, 0.4, 0.025), 3)  # [m]
 fmax_values = D_array/0.2*100  # [kN]
 
 xmin = -15
@@ -325,6 +325,9 @@ for select in range(len(D_array)):
     N = np.array(g_o.getresults(phase, g_o.ResultTypes.EmbeddedBeam.Nx2D, "node"))
     Q = np.array(g_o.getresults(phase, g_o.ResultTypes.EmbeddedBeam.Q2D, "node"))
     M = np.array(g_o.getresults(phase, g_o.ResultTypes.EmbeddedBeam.M2D, "node"))
+    PUx = np.array(g_o.getresults(phase, g_o.ResultTypes.EmbeddedBeam.PUx, "node"))
+    PUy = np.array(g_o.getresults(phase, g_o.ResultTypes.EmbeddedBeam.PUy, "node"))
+    PUtot = np.array(g_o.getresults(phase, g_o.ResultTypes.EmbeddedBeam.PUtot, "node"))
 
     # Use the geometry of the piles to split the results for the different piles by creating an index array
     def split_pile_results(n_piles=n_piles, pile_spacing=pile_spacing, pile_1_x_top=pile_1_x_top):
@@ -353,6 +356,9 @@ for select in range(len(D_array)):
         "N": N,
         "Q": Q,
         "M": M,
+        "PUx": PUx,
+        "PUy": PUy,	
+        "PUtot": PUtot,
         "pile_number": pile_number
     }
     piledf = pd.DataFrame(data)

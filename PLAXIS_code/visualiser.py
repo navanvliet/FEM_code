@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
-diameters = np.arange(0.1, 0.4, 0.025)  # [m]
+diameters = np.round(np.arange(0.1, 0.4, 0.025), 3) # [m]
 
 # include diameter name in file
 
