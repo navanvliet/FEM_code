@@ -1,17 +1,19 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib.colors import ListedColormap, BoundaryNorm
-from matplotlib.path import Path
 
 diameters = np.arange(0.1, 0.4, 0.025)  # [m]
 
 # include diameter name in file
 
-def plot_pile_data(diameters, column_name):
+def plot_pile_data(diameters):
     
+    N = "N"
+    Q = "Q"
+    M = "M"
+
     # Create the subplots
-    fig, axes = plt.subplots(1, 3, figsize=(15, 6), sharex=True)
+    fig, axes = plt.subplots(3, 3, figsize=(10, 15), sharex=True)
 
     for select in range(len(diameters)):
         # Load the CSV file
@@ -23,40 +25,39 @@ def plot_pile_data(diameters, column_name):
         pile_2_data = data[data["pile_number"] == 2]
         pile_3_data = data[data["pile_number"] == 3]
 
-        # Plot data for pile 1
-        axes[0].plot(pile_1_data[column_name], pile_1_data["y"], label=f"D = {diameters[select]:.3f} m")
-        axes[0].set_title("Pile 1: Bending Moment over Depth")
-        axes[0].set_xlabel(f"{column_name} [kNm]")
-        axes[0].set_ylabel("Depth [m]")
-        axes[0].legend()
-        axes[0].grid()
+        for j in range(3):
+            # Get the column name for the current subplot
+            column_name = [N, Q, M][j]
 
-        # Plot data for pile 2
-        axes[1].plot(pile_2_data[column_name], pile_2_data["y"], label=f"D = {diameters[select]:.3f} m")
-        axes[1].set_title("Pile 2: Bending Moment over Depth")
-        axes[1].set_xlabel(f"{column_name} [kNm]")
-        axes[1].set_ylabel("Depth [m]")
-        axes[1].legend()
-        axes[1].grid()
+            # Plot data for pile 1
+            axes[0][j].plot(pile_1_data[column_name], pile_1_data["y"], label=f"D = {diameters[select]:.3f} m")
+            axes[0][j].set_title(f"Pile 1: {column_name} over Depth")
+            axes[0][j].set_xlabel(f"{column_name} [kNm]")
+            axes[0][j].set_ylabel("Depth [m]")
+            axes[0][j].set_xlim(-80, 0)  # Set x-axis limits
+            axes[0][j].legend(fontsize='xx-small')
+            axes[0][j].grid()
 
-        # Plot data for pile 3
-        axes[2].plot(pile_3_data[column_name], pile_3_data["y"], label=f"D = {diameters[select]:.3f} m")
-        axes[2].set_title("Pile 3: Bending Moment over Depth")
-        axes[2].set_xlabel(f"{column_name} [kNm]")
-        axes[2].set_ylabel("Depth [m]")
-        axes[2].legend()
-        axes[2].grid()
+            # Plot data for pile 2
+            axes[1][j].plot(pile_2_data[column_name], pile_2_data["y"], label=f"D = {diameters[select]:.3f} m")
+            axes[1][j].set_title(f"Pile 2: {column_name} over Depth")
+            axes[1][j].set_xlabel(f"{column_name} [kNm]")
+            axes[1][j].set_ylabel("Depth [m]")
+            axes[1][j].set_xlim(-20, 20)  # Set x-axis limits
+            axes[1][j].legend(fontsize='xx-small')
+            axes[1][j].grid()
+
+            # Plot data for pile 3
+            axes[2][j].plot(pile_3_data[column_name], pile_3_data["y"], label=f"D = {diameters[select]:.3f} m")
+            axes[2][j].set_title(f"Pile 3: {column_name} over Depth")
+            axes[2][j].set_xlabel(f"{column_name} [kNm]")
+            axes[2][j].set_xlim(-40, 20)  # Set x-axis limits
+            axes[2][j].set_ylabel("Depth [m]")
+            axes[2][j].legend(fontsize='xx-small')
+            axes[2][j].grid()
 
     # Adjust layout
     plt.tight_layout()
     plt.show()
 
-# Example usage
-x = "x"
-y = "y"
-Ux = "Ux"
-Uy = "Uy"
-N = "N"
-Q = "Q"
-M = "M"
-plot_pile_data(diameters, M)
+plot_pile_data(diameters)
