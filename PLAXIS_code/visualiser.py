@@ -34,7 +34,7 @@ def plot_pile_data(diameters):
             axes[0][j].set_title(f"Pile 1: {column_name} over Depth")
             axes[0][j].set_xlabel(f"{column_name} [kNm]")
             axes[0][j].set_ylabel("Depth [m]")
-            axes[0][j].set_xlim(-80, 0)  # Set x-axis limits
+            # axes[0][j].set_xlim(-80, 0)  # Set x-axis limits
             axes[0][j].legend(fontsize='xx-small')
             axes[0][j].grid()
 
@@ -43,7 +43,7 @@ def plot_pile_data(diameters):
             axes[1][j].set_title(f"Pile 2: {column_name} over Depth")
             axes[1][j].set_xlabel(f"{column_name} [kNm]")
             axes[1][j].set_ylabel("Depth [m]")
-            axes[1][j].set_xlim(-20, 20)  # Set x-axis limits
+            # axes[1][j].set_xlim(-20, 20)  # Set x-axis limits
             axes[1][j].legend(fontsize='xx-small')
             axes[1][j].grid()
 
@@ -51,7 +51,7 @@ def plot_pile_data(diameters):
             axes[2][j].plot(pile_3_data[column_name], pile_3_data["y"], label=f"D = {diameters[select]:.3f} m")
             axes[2][j].set_title(f"Pile 3: {column_name} over Depth")
             axes[2][j].set_xlabel(f"{column_name} [kNm]")
-            axes[2][j].set_xlim(-40, 20)  # Set x-axis limits
+            # axes[2][j].set_xlim(-40, 20)  # Set x-axis limits
             axes[2][j].set_ylabel("Depth [m]")
             axes[2][j].legend(fontsize='xx-small')
             axes[2][j].grid()
